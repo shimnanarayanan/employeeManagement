@@ -16,3 +16,17 @@ Route::get('/', function () {
 });
 Route::get('/employees','EmployeeController@index');
 Route::post('/employees','EmployeeController@store');
+
+Route::get('/login','EmployeeController@show');
+Route::post('/login','EmployeeController@login');
+
+Route::get('/logout','EmployeeController@create');
+
+Route::get('/employees/{employeeid}','EmployeeController@edit');
+
+Route::post('/update','EmployeeController@update');
+
+Auth::routes();
+
+
+Route::get('/home', 'HomeController@index')->name('home');

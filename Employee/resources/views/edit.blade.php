@@ -1,42 +1,40 @@
 @extends('master')
 @section('content')
-
-
-
- 
   
    <section class="section-test mt-8">
         <header class="section-header">
             <h2> EMPLOYEE REGISTRATION FORM</h2>
             <hr>
+            {{-- <img src="/storage/public/profiles/{{$employee->photo}}"  height="100px" width="100px"> --}}
             </header>
+         
        <div class="container">
             
-            <form name="employee_form" class="form control text-centre"  method=POST enctype="multipart/form-data" action='/employees'>
-            
+            <form name="employee_form" class="form control text-centre"  method=POST enctype="multipart/form-data" action='/update'>
+              
                 {{ csrf_field() }}
 
                 <div class="row">
 
                     <div class="col-md-2"></div>
 
-                    <div class="form-group col-10 col-md-4">
+                    <div class="form-group col-10 col-md-4 {{ $errors->has('fname') ? 'has-error' : '' }}">
                       
 				
                         <label class="label-test">First Name</label>
 
-                         <input class="form-control" type="text" name="fname" placeholder="First Name" id="first_name" value="{{ old('fname') }}"  required="">
+                         <input class="form-control" type="text" name="fname" placeholder="First Name" id="first_name" value="{{$employee->name}}"  required="">
                         
                          @if ($errors->has('fname'))
 
                 <span class="text-danger">{{ $errors->first('fname') }}</span>
-                <span class="text-area-danger"> {{ $errors->has('fname') ? 'is-danger' : '' }}</span>
+
             @endif
                     </div>
     
                     <div class="form-group col-10 col-md-4">
                             <label class="label-test">Last Name</label>
-                        <input class="form-control" type="text" name="lname" placeholder="Last Name" id="last_name"  value="{{ old('lname') }}"  required="">
+                        <input class="form-control" type="text" name="lname" placeholder="Last Name" id="last_name"  value="{{ $employee->name}}"  required="">
                         <span class="span-test text-danger">{{ $errors->first('lname') }}</span>
                       </div>
 
@@ -48,14 +46,14 @@
                                     <div class="col-md-2"></div>
                                     <div class="form-group col-12 col-md-4">
                                             <label class="label-test">Email</label>
-                                      <input class="form-control" type="text" name="email" placeholder="Email" id="email" value="{{ old('email') }}"  required="">
+                                      <input class="form-control" type="text" name="email" placeholder="Email" id="email" value="{{$employee->email }}"  required="">
                                     
                                       <span class="text-danger">{{ $errors->first('email') }}</span>
                                     </div>
                     
                                     <div class="form-group col-12 col-md-4">
                                             <label class="label-test">Mobile No</label>
-                                      <input class="form-control" type="text" name="mobile" placeholder="mobileno" id="mobile" value="{{ old('mobile') }}"  required="">
+                                      <input class="form-control" type="text" name="mobile" placeholder="mobileno" id="mobile" value="{{ $employee->mobile }}"  required="">
                                       <span class="text-danger">{{ $errors->first('mobile') }}</span>
                                     </div>
                                  
@@ -67,14 +65,16 @@
                                         <div class="col-md-2"></div>
                                         <div class="form-group col-12 col-md-4">
                                                 <label class="label-test">Password</label>
-                                          <input class="form-control" type="password" name="password" placeholder="Enter password" id="password" value="{{ old('password') }}" required="">
-                                          <span class="text-danger">{{ $errors->first('password') }}</span>
+                                         
+                                               <input class="form-control" type="password" name="password" placeholder="Enter password" id="password" value="{{ $pass}}" required="">
+                                               <button onclick="show()"><img src="https://i.stack.imgur.com/Oyk1g.png" id="EYE"></button>
+                                               <span class="text-danger">{{ $errors->first('password') }}</span>
                                         </div>
                         
                                         <div class="form-group col-12 col-md-4">
                                                 <label class="label-test">Confirm Password</label>
-                                          <input class="form-control" type="password" name="password" placeholder="Confirm password" id="confirm pass" value="{{ old('password') }}"  required="">
-                                          
+                                          <input class="form-control" type="password" name="password" placeholder="Confirm password" id="confirm pass" required="">
+                                          {{-- <button onclick="show()"><img src="https://i.stack.imgur.com/Oyk1g.png" id="EYE"></button> --}}
                                          
                                         </div>
                                         <div class="col-md-2"></div>
@@ -93,12 +93,12 @@
                             <div class="row"> 
                                     <div class="custom-controls-stacked">
                                             <div class="custom-control custom-radio">
-                                              <input type="radio" class="custom-control-input" name="gender" value="male" >
+                                              <input type="radio" class="custom-control-input" name="gender" value="{{$employee->gender}}" >
                                               <label class="custom-control-label"><label class="label-test">Male</label>
                                             </div>
                                     </div>
                                             <div class="custom-control custom-radio">
-                                              <input type="radio" class="custom-control-input" name="gender" value="female" checked>
+                                              <input type="radio" class="custom-control-input" name="gender" value="{{$employee->gender}}" checked>
                                               <label class="custom-control-label"><label class="label-test">Female</label>
                                             </div>
                                    
@@ -109,7 +109,7 @@
 
                             <div class="form-group col-12 col-md-4">
                                     <label class="label-test">Date of Birth</label>
-                              <input class="form-control" type="date" name="dob" placeholder="dob" id="dob" value="{{ old('dob') }}" required="">
+                              <input class="form-control" type="date" name="dob" placeholder="dob" id="dob" value="{{$employee->dob}}" required="">
                               <span class="text-danger">{{ $errors->first('dob') }}</span>
                             </div>
                             <div class="col-md-2"></div>
@@ -126,8 +126,10 @@
                                    <div class="form-group col-12 col-md-8">
                                     <label class="label-test">Upload photo </label>
                                    
-                                   <input type="file" class="form-control" name="photo" placeholder="Upload Photo" id="photo" value="{{ old('photo') }}"  required="">
-                                   <span class="text-danger">{{ $errors->first('photo') }}</span>
+                                   
+                                    <input type="file" class="form-control" name="photo" placeholder="Upload Photo" id="photo" value="{{$employee->photo}}"  required="">
+                                   {{-- <img src="/storage/pubilc/profiles" alt="photo"> --}}
+                                    <span class="text-danger">{{ $errors->first('photo') }}</span>
                                   </div>
 
                                   <div class="col-md-2"></div>
@@ -139,7 +141,7 @@
                         <div class="col-md-2"></div>
                          <div class="form-group col-8">
                                 <label class="label-test">Address</label>
-                            <textarea class="form-control" name="address" placeholder="Enter address" rows="3" id="address" value="{{old('address')}}"  required=""></textarea>
+                            <textarea class="form-control" name="address" placeholder="Enter address"  id="address" value="{{$employee->address}}"  required=""></textarea>
                             <span class="text-danger">{{ $errors->first('address') }}</span>
                           </div>
                           
@@ -151,7 +153,7 @@
                         <div class="col-md-2"></div>
                    
                           <div class="form-group col-8">
-                              <button class="btn btn-lg btn-block btn-primary" type="submit" onclick="return validateForm()">Submit</button>
+                              <button class="btn btn-lg btn-block btn-primary" type="submit" onclick="return validateForm()"  >Submit</button>
                           </div>
                           
                         <div class="col-md-2"></div>
@@ -217,6 +219,18 @@
  
  
 
+}
+function show() {
+var a=document.getElementById("password");
+var b=document.getElementById("EYE");
+if (a.type=="password")  {
+a.type="text";
+b.src="https://i.stack.imgur.com/waw4z.png";
+}
+else {
+a.type="password";
+b.src="https://i.stack.imgur.com/Oyk1g.png";
+}
 }
 </script>
  

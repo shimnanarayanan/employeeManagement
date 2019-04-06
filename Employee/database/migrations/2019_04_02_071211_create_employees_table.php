@@ -17,10 +17,11 @@ class CreateEmployeesTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('email');
+            $table->string('mobile');
             $table->string('password');
-            $table->string('dob');
             $table->string('gender');
-            $table->Integer('mobileno');
+            $table->string('dob');
+            $table->string('photo');
             $table->Text('address');
             $table->timestamps();
         });
